@@ -1,0 +1,3 @@
+#!/bin/bash
+
+imgtool.py ext4 unpack $@

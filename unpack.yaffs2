@@ -1,0 +1,3 @@
+#!/bin/bash
+
+imgtool.py yaffs2 unpack $@
