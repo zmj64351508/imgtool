@@ -251,7 +251,7 @@ class Ramdisk(ImageType):
 		def set_default_params(self):
 			# default values
 			self.cmdline = "console=ttyS1,115200n8 rootdelay=2 no_console_suspend selinux=0"
-			self.base = "0x0200800"
+			self.base = "0x02008000"
 			self.page_size = "4096"
 
 		def set_params(self, argv_to_parse):
