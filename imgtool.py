@@ -128,7 +128,7 @@ class Ext(ImageType):
 	def usage(self):
 		print "usage:"
 		print get_script_name() + " ext(4) unpack image_name [output_dir]"
-		print get_script_name() + " ext(4) pack input_dir mount_point [image_name] [--size]"
+		print get_script_name() + " ext(4) pack input_dir mount_point [image_name] [--size] [--file_contexts]"
 		print "\t--size image_size"
 		print get_script_name() + " ext(4) clean [output_dir]"
 
@@ -174,7 +174,7 @@ class Ext(ImageType):
 			return "new_ext.img"
 
 		def parse_args(self, argc, argv):
-			self.check_args(argc, argv, 3)
+			self.check_args(argc, argv, 4)
 			self.input_dir = argv[1]
 			self.mount_point = argv[2]
 
@@ -184,16 +184,19 @@ class Ext(ImageType):
 
 		def set_params(self, argv_to_parse):
 			# parse parameters by in comming arguments
-			opts, args = getopt.getopt(argv_to_parse, "", ["size="])
+			opts, args = getopt.getopt(argv_to_parse, "", ["size=", "file_contexts="])
 			for op, value in opts:
 				if op in ("--size"):
 					self.image_size = value
+				elif op in ("--file_contexts"):
+					self.file_contexts = value
 
 		def do_work_initialized(self, argc, argv):
 			#"make_ext4fs $ENABLE_SPARSE_IMAGE $FCOPT -l $SIZE -a $MOUNT_POINT $OUTPUT_FILE $SRC_DIR"
 			self.run_utils("make_ext4fs -s " + 
 				       "-l " + self.image_size + " " + 
 				       "-a " + self.mount_point + " " +
+				       "-S " + self.file_contexts + " " +
 				       os.path.join(self.input_dir, self.output) + " " +
 				       os.path.join(self.input_dir, self.fs_name))
 
