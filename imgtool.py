@@ -256,10 +256,11 @@ class Ramdisk(ImageType):
 			self.cmdline = "console=ttyS1,115200n8 rootdelay=2 no_console_suspend selinux=0"
 			self.base = "0x02008000"
 			self.page_size = "4096"
+			self.ramdisk_offset = "0x02000000"
 
 		def set_params(self, argv_to_parse):
 			# parse parameters by in comming arguments
-			opts, args = getopt.getopt(argv_to_parse, "", ["base=", "page_size=", "cmdline="])
+			opts, args = getopt.getopt(argv_to_parse, "", ["base=", "page_size=", "cmdline=", "ramdisk_offset="])
 			for op, value in opts:
 				if op in ("--base"):
 					self.base = value
@@ -267,6 +268,8 @@ class Ramdisk(ImageType):
 					self.page_size = value
 				elif op in ("--cmdline"):
 					self.cmdline = value
+				elif op in ("--ramdisk_offset"):
+					self.ramdisk_offset = value
 
 		def do_work_initialized(self, argc, argv):
 			# mkbootfs $1/ramdisk | gzip > $1/ramdisk-new.gz
@@ -281,6 +284,7 @@ class Ramdisk(ImageType):
 					"--cmdline \""  + self.cmdline  + "\" " + 
 					"--base " + self.base + " " + 
 					"--pagesize " + self.page_size + " " +
+					"--ramdisk_offset " + self.ramdisk_offset + " " +
 					"-o " + os.path.join(self.input_dir, self.output))
 			os.remove(self.input_dir + "/ramdisk-new.gz")
 
